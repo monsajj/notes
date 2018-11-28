@@ -3,9 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Site\Notes\Note;
 
 class NoteController extends Controller
 {
+    /**
+     * @var Note
+     */
+    private $note;
+
+    /**
+     * NoteController constructor.
+     * @param Note $note
+     */
+    public function __construct(Note $note)
+    {
+        $this->note = $note;
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +29,8 @@ class NoteController extends Controller
      */
     public function index()
     {
-        //
+        $notes = $this->note->all();
+        return view('notes.index', ['notes' => $notes]);
     }
 
     /**
@@ -23,7 +40,7 @@ class NoteController extends Controller
      */
     public function create()
     {
-        //
+        return view('notes.note-create');
     }
 
     /**
@@ -34,7 +51,12 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $this->request->getInput();
+        $data['categoryid'] = (int)$data['categoryid'];
+        if ($this->productValidator->validate($data)) {
+            $this->productStore->store($data);
+        }
+        return $this->redirect('\admin\products');
     }
 
     /**
@@ -45,7 +67,9 @@ class NoteController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = $this->productRepository->findOneByOrFail('slug', $slug);
+        $images = $this->productImageRepository->getImagesForProduct($product->getId());
+        return view('front.products.product', compact('product', 'images'));
     }
 
     /**
@@ -68,7 +92,10 @@ class NoteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = $this->product->findById($id);
+        View::renderTemplate('admin/products/update.html', [
+            'product' => $product
+        ]);
     }
 
     /**
@@ -79,6 +106,7 @@ class NoteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->product->delete($id);
+        return $this->redirect('\admin\products');
     }
 }
