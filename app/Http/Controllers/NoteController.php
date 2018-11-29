@@ -30,6 +30,7 @@ class NoteController extends Controller
     public function index()
     {
         $notes = $this->note->all();
+
         return view('notes.index', ['notes' => $notes]);
     }
 
@@ -51,12 +52,9 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $this->request->getInput();
-        $data['categoryid'] = (int)$data['categoryid'];
-        if ($this->productValidator->validate($data)) {
-            $this->productStore->store($data);
-        }
-        return $this->redirect('\admin\products');
+        $this->note->fill($request->toArray())->save();
+
+        return redirect('/');
     }
 
     /**
@@ -67,9 +65,9 @@ class NoteController extends Controller
      */
     public function show($id)
     {
-        $product = $this->productRepository->findOneByOrFail('slug', $slug);
-        $images = $this->productImageRepository->getImagesForProduct($product->getId());
-        return view('front.products.product', compact('product', 'images'));
+        $note = $this->note->findOrFail($id);
+
+        return view('notes.note-show' , ['note' => $note]);
     }
 
     /**
@@ -80,7 +78,9 @@ class NoteController extends Controller
      */
     public function edit($id)
     {
-        //
+        $note = $this->note->findOrFail($id);
+
+        return view('notes.note-update' , ['note' => $note]);
     }
 
     /**
@@ -92,21 +92,23 @@ class NoteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = $this->product->findById($id);
-        View::renderTemplate('admin/products/update.html', [
-            'product' => $product
-        ]);
+
+        $this->note->findOrFail($id)->fill($request->toArray())->save();
+
+        return redirect('/');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        $this->product->delete($id);
-        return $this->redirect('\admin\products');
+        $this->note->destroy($id);
+
+        return redirect('/');
     }
 }

@@ -23,6 +23,7 @@ class CreateNotesTable extends Migration
             $table->boolean('public');
             $table->text('tags')->nullable();
             $table->string('colour', 7);
+            $table->integer('lifetime');
             $table->timestamps();
         });
     }

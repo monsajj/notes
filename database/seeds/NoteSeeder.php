@@ -23,6 +23,7 @@ class NoteSeeder extends Seeder
                 'public' => false,
                 'tags' => null,
                 'colour' => 'green',
+                'lifetime' => 1,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],
@@ -35,6 +36,7 @@ class NoteSeeder extends Seeder
                 'public' => false,
                 'tags' => null,
                 'colour' => 'red',
+                'lifetime' => 15,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]

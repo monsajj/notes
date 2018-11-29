@@ -22,7 +22,8 @@ class Note extends Model
         'text',
         'public',
         'tags',
-        'colour'
+        'colour',
+        'lifetime'
     ];
 
     /**
