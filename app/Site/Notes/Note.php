@@ -3,9 +3,12 @@
 namespace App\Site\Notes;
 
 use App\Site\Files\File;
-use App\User;
+use App\Site\Users\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use phpDocumentor\Reflection\Types\Integer;
+use Illuminate\Support\Facades\Auth;
 
 class Note extends Model
 {
@@ -43,6 +46,16 @@ class Note extends Model
     }
 
     /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeByUser(Builder $query, $id)
+    {
+        return $query->where('id', $id);
+    }
+
+    /**
      * @param string $slug
      */
     public function setSlugAttribute(string $slug)
@@ -56,5 +69,10 @@ class Note extends Model
     public function setTextAttribute(string $text)
     {
         $this->attributes['text'] = trim($text);
+    }
+
+    public function getUserId()
+    {
+        return Auth::id();
     }
 }
