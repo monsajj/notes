@@ -9,7 +9,18 @@
 namespace App\Site\Files;
 
 
-class File
+use App\Site\Notes\Note;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+class File extends Model
 {
 
+    /**
+     * @return HasOne
+     */
+    public function products()
+    {
+        return $this->hasOne(Note::class);
+    }
 }

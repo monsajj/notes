@@ -45,14 +45,20 @@ class Note extends Model
         return $this->belongsTo(File::class);
     }
 
-    /**
-     * @param Builder $query
-     *
-     * @return Builder
-     */
-    public function scopeByUser(Builder $query, $id)
+    public function getNotesByUserId()
     {
-        return $query->where('id', $id);
+        $notes = $this->latest('updated_at')->user()->get();
+
+        return $notes;
+    }
+
+    /**
+     * @param Builder $builder
+     *
+     */
+    public function scopeUser(Builder $builder)
+    {
+        $builder->where('user_id', Auth::id());
     }
 
     /**
@@ -69,10 +75,5 @@ class Note extends Model
     public function setTextAttribute(string $text)
     {
         $this->attributes['text'] = trim($text);
-    }
-
-    public function getUserId()
-    {
-        return Auth::id();
     }
 }

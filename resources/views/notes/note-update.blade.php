@@ -13,48 +13,6 @@
                             @csrf
 
                             <div class="form-group row">
-                                <label for="user_id" class="col-md-4 col-form-label text-md-right">user_id</label>
-
-                                <div class="col-md-6">
-                                    <input id="user_id" type="text" class="form-control{{ $errors->has('user_id') ? ' is-invalid' : '' }}" name="user_id" value="{{ $note->user_id }}" required autofocus>
-
-                                    @if ($errors->has('user_id'))
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('user_id') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="file_id" class="col-md-4 col-form-label text-md-right">file_id</label>
-
-                                <div class="col-md-6">
-                                    <input id="file_id" type="text" class="form-control{{ $errors->has('file_id') ? ' is-invalid' : '' }}" name="file_id" value="{{ $note->file_id }}" required autofocus>
-
-                                    @if ($errors->has('file_id'))
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('file_id') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="slug" class="col-md-4 col-form-label text-md-right">slug</label>
-
-                                <div class="col-md-6">
-                                    <input id="slug" type="text" class="form-control{{ $errors->has('slug') ? ' is-invalid' : '' }}" name="slug" value="{{ $note->slug }}" required autofocus>
-
-                                    @if ($errors->has('slug'))
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('slug') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
                                 <label for="title" class="col-md-4 col-form-label text-md-right">title</label>
 
                                 <div class="col-md-6">
@@ -72,8 +30,9 @@
                                 <label for="text" class="col-md-4 col-form-label text-md-right">text</label>
 
                                 <div class="col-md-6">
-                                    <input id="text" type="text" class="form-control{{ $errors->has('text') ? ' is-invalid' : '' }}" name="text" value="{{ $note->text }}" required autofocus>
-
+                                    <textarea id="text" type="text" class="form-control{{ $errors->has('text') ? ' is-invalid' : '' }}" name="text" rows="5" required autofocus>
+                                        {{ $note->text }}
+                                    </textarea>
                                     @if ($errors->has('text'))
                                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('text') }}</strong>
@@ -83,24 +42,10 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="public" class="col-md-4 col-form-label text-md-right">public</label>
-
-                                <div class="col-md-6">
-                                    <input id="public" type="text" class="form-control{{ $errors->has('public') ? ' is-invalid' : '' }}" name="public" value="{{ $note->public }}" required autofocus>
-
-                                    @if ($errors->has('public'))
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('public') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
                                 <label for="tags" class="col-md-4 col-form-label text-md-right">tags</label>
 
                                 <div class="col-md-6">
-                                    <input id="tags" type="text" class="form-control{{ $errors->has('tags') ? ' is-invalid' : '' }}" name="tags" value="{{ $note->tags }}" required autofocus>
+                                    <input id="tags" type="text" class="form-control{{ $errors->has('tags') ? ' is-invalid' : '' }}" name="tags" value="{{ $note->tags }}" placeholder="not required" autofocus>
 
                                     @if ($errors->has('tags'))
                                         <span class="invalid-feedback" role="alert">
@@ -112,9 +57,15 @@
 
                             <div class="form-group row">
                                 <label for="colour" class="col-md-4 col-form-label text-md-right">colour</label>
-
                                 <div class="col-md-6">
-                                    <input id="colour" type="text" class="form-control{{ $errors->has('colour') ? ' is-invalid' : '' }}" name="colour" value="{{ $note->colour }}" required autofocus>
+                                    <select class="form-control{{ $errors->has('colour') ? ' is-invalid' : '' }}" id="colour" name="colour" required autofocus>
+                                        <option {{ $note->colour == 'white' ? 'selected' : '' }} value="white">white</option>
+                                        <option {{ $note->colour == 'black' ? 'selected' : '' }} value="black">black</option>
+                                        <option {{ $note->colour == 'green' ? 'selected' : '' }} value="green">green</option>
+                                        <option {{ $note->colour == 'yellow' ? 'selected' : '' }} value="yellow">yellow</option>
+                                        <option {{ $note->colour == 'red' ? 'selected' : '' }} value="red">red</option>
+                                        <option {{ $note->colour == 'blue' ? 'selected' : '' }} value="blue">blue</option>
+                                    </select>
 
                                     @if ($errors->has('colour'))
                                         <span class="invalid-feedback" role="alert">
@@ -128,7 +79,12 @@
                                 <label for="lifetime" class="col-md-4 col-form-label text-md-right">lifetime</label>
 
                                 <div class="col-md-6">
-                                    <input id="lifetime" type="text" class="form-control{{ $errors->has('lifetime') ? ' is-invalid' : '' }}" name="lifetime" value="{{ $note->lifetime }}" required autofocus>
+                                    <select class="form-control{{ $errors->has('lifetime') ? ' is-invalid' : '' }}" id="lifetime" name="lifetime" required autofocus>
+                                        <option selected value="{{ $note->lifetime }}">{{ $note->lifetime }} days lasts</option>
+                                        <option value="30">30 days</option>
+                                        <option value="15">15 days</option>
+                                        <option value="1">1 day</option>
+                                    </select>
 
                                     @if ($errors->has('lifetime'))
                                         <span class="invalid-feedback" role="alert">

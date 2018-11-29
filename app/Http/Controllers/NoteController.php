@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Site\Notes\Note;
+use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
@@ -29,7 +30,7 @@ class NoteController extends Controller
      */
     public function index()
     {
-        $notes = $this->note->byUser($this->note->getUserId())->get();
+        $notes = $this->note->getNotesByUserId();
 
         return view('notes.index', ['notes' => $notes]);
     }
@@ -52,7 +53,10 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        $this->note->fill($request->toArray())->save();
+        $this->note->fill($request->toArray());
+        $this->note->file_id = 1;
+        $this->note->slug = 'name-' . $request->title;
+        $this->note->save();
 
         return redirect('/');
     }
@@ -65,7 +69,7 @@ class NoteController extends Controller
      */
     public function show($id)
     {
-        $note = $this->note->findOrFail($id);
+        $note = $this->note->with(['file'])->findOrFail($id);
 
         return view('notes.note-show' , ['note' => $note]);
     }
@@ -92,8 +96,11 @@ class NoteController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        $this->note->findOrFail($id)->fill($request->toArray())->save();
+        $this->note = $this->note->find($id)->fill($request->toArray());
+        $this->note->user_id = Auth::id();
+        $this->note->file_id = 1;
+        $this->note->slug = 'name-' . $request->title;
+        $this->note->save();
 
         return redirect('/');
     }
