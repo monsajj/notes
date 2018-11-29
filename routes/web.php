@@ -11,12 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'NoteController@index');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('notes', 'NoteController');
+Route::get('/notes/delete/{note}', 'NoteController@delete')->name('notes.delete');

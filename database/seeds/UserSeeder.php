@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'monsajj',
                 'email' => 'monsajj@email.com',
-                'password' => '56141018',
+                'password' => '$2y$10$/N/n/vPWquUlt3KeOSeiP.pHeaxihVGdROaXG4MvKk8b8JnOkoZ.S',
                 'email_verified_at' => null,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'admin',
                 'email' => 'admin@email.com',
-                'password' => 'qwerty',
+                'password' => '$2y$10$/N/n/vPWquUlt3KeOSeiP.pHeaxihVGdROaXG4MvKk8b8JnOkoZ.S',
                 'email_verified_at' => null,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
