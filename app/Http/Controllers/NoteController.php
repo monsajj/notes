@@ -29,7 +29,7 @@ class NoteController extends Controller
      */
     public function index()
     {
-        $notes = $this->note->all();
+        $notes = $this->note->byUser($this->note->getUserId())->get();
 
         return view('notes.index', ['notes' => $notes]);
     }

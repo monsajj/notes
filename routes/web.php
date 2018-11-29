@@ -11,11 +11,10 @@
 |
 */
 
-Route::get('/', 'NoteController@index');
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'NoteController@index')->middleware('auth');
+Route::resource('notes', 'NoteController')->middleware('auth');
+Route::get('/notes/delete/{note}', 'NoteController@delete')->name('notes.delete')->middleware('auth');
 
-Route::resource('notes', 'NoteController');
-Route::get('/notes/delete/{note}', 'NoteController@delete')->name('notes.delete');
+Route::get('/home', 'HomeController@index')->name('home');
