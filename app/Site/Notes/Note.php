@@ -7,7 +7,6 @@ use App\Site\Users\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use phpDocumentor\Reflection\Types\Integer;
 use Illuminate\Support\Facades\Auth;
 
 class Note extends Model
@@ -59,14 +58,6 @@ class Note extends Model
     public function scopeUser(Builder $builder)
     {
         $builder->where('user_id', Auth::id());
-    }
-
-    /**
-     * @param string $slug
-     */
-    public function setSlugAttribute(string $slug)
-    {
-        $this->attributes['slug'] = strtolower($slug);
     }
 
     /**

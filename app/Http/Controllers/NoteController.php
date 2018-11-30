@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Site\Files\File;
 use Illuminate\Http\Request;
 use App\Site\Notes\Note;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class NoteController extends Controller
 {
@@ -14,11 +16,18 @@ class NoteController extends Controller
     private $note;
 
     /**
+     * @var File
+     */
+    private $file;
+
+    /**
      * NoteController constructor.
      * @param Note $note
+     * @param File $file
      */
-    public function __construct(Note $note)
+    public function __construct(Note $note, File $file)
     {
+        $this->file = $file;
         $this->note = $note;
     }
 
@@ -53,8 +62,14 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->file('image'))
+        {
+            $downloadedFile = $request->file('image');
+            $this->file->saveFile($downloadedFile);
+        }
+
         $this->note->fill($request->toArray());
-        $this->note->file_id = 1;
+        $this->note->file_id = $this->file->id;
         $this->note->slug = 'name-' . $request->title;
         $this->note->save();
 
@@ -96,9 +111,15 @@ class NoteController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if($request->file('image'))
+        {
+            $downloadedFile = $request->file('image');
+            $this->file->saveFile($downloadedFile);
+        }
+
         $this->note = $this->note->find($id)->fill($request->toArray());
-        $this->note->user_id = Auth::id();
-        $this->note->file_id = 1;
+        $this->note->user_id = Auth::id(); //Переместить!!! это тут только временно!!!!!!!!!!!!!!!!!!!!!!!!!!
+        $this->note->file_id = $this->file->id;
         $this->note->slug = 'name-' . $request->title;
         $this->note->save();
 
