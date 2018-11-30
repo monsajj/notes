@@ -14,7 +14,10 @@
 Auth::routes();
 
 Route::get('/', 'NoteController@index')->middleware('auth');
+Route::post('/notes/{note}', 'NoteController@update')->name('notes.update')->middleware('auth');
 Route::resource('notes', 'NoteController')->middleware('auth');
 Route::get('/notes/delete/{note}', 'NoteController@delete')->name('notes.delete')->middleware('auth');
+
+Route::get('/file/download/{id}', 'FileController@downloadFile')->name('file.download');
 
 Route::get('/home', 'HomeController@index')->name('home');

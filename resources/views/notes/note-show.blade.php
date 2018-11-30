@@ -10,14 +10,6 @@
                     <div class="card-body">
 
                         <div class="form-group row">
-                            <label for="file_id" class="col-md-4 col-form-label text-md-right">file_id</label>
-
-                            <div class="col-md-6">
-                                <input id="file_id" type="text" class="form-control" name="file_id" value="{{ $note->file->src }}">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
                             <label for="title" class="col-md-4 col-form-label text-md-right">title</label>
 
                             <div class="col-md-6">
@@ -39,7 +31,7 @@
                             <label for="tags" class="col-md-4 col-form-label text-md-right">tags</label>
 
                             <div class="col-md-6">
-                                <input id="tags" type="text" class="form-control" name="tags" value="{{ $note->tags }}" disabled>
+                                <input id="tags" type="text" class="form-control" name="tags" value="{{ $note->file }}" disabled>
                             </div>
                         </div>
 
@@ -59,6 +51,18 @@
                             </div>
                         </div>
 
+                        @if($note->file !== null)
+                            <div class="form-group row">
+                                <label for="image" class="col-md-4 col-form-label text-md-right">file download</label>
+                                <div class="col-md-6">
+                                    <p>
+                                        <a name="image" id="image" type="file" class="form-control"  href="{{ route('file.download', ['path' => $note->file->id]) }}">
+                                            Скачать картинку
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        @endif
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
