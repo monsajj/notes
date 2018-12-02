@@ -37,6 +37,6 @@ class NoteSearcher
     {
         return $this->note->where([
             [$searchField, 'LIKE', '%' . $param . '%']
-        ])->user()->get();
+        ])->user()->alive()->get();
     }
 }

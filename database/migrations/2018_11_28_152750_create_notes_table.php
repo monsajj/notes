@@ -24,6 +24,7 @@ class CreateNotesTable extends Migration
             $table->text('tags')->nullable();
             $table->string('colour', 7);
             $table->integer('lifetime');
+            $table->dateTime('deathdate');
             $table->timestamps();
         });
     }
