@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Заметки
+                    <div class="card-header">Notes
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <a type="submit" class="btn btn-primary" href="{{ route('notes.create') }}">

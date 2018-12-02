@@ -64,11 +64,11 @@
                             </div>
                         @endif
 
-                        @if($note->public)
+                        @if($note->public && Route::current()->getName() == 'show.public')
                             <div class="form-group row mb-0">
-                                <label for="url" class="col-md-4 col-form-label text-md-right">url to public access</label>
+                                <label for="url" class="col-md-4 col-form-label text-md-right">link to public access </label>
                                 <div class="col-md-6 offset-md-4">
-                                    <input name="url" id="url" type="text" class="form-control" value=" {{ Request::url() }}" size="30">
+                                    <input name="url" id="url" type="text" class="form-control" value=" {{ Request::url() }}" size="30" disabled>
                                 </div>
                             </div>
                         @endif
