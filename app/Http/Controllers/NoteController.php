@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreNote;
 use App\Site\Files\File;
 use Illuminate\Http\Request;
 use App\Site\Notes\Note;
@@ -58,10 +59,10 @@ class NoteController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreNote  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreNote $request)
     {
         if($request->user_id != Auth::id())
         {
@@ -119,11 +120,11 @@ class NoteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreNote  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreNote $request, $id)
     {
         $note = $this->note->find($id)->fill($request->toArray());
         if($note->user_id != Auth::id())
