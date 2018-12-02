@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Site\Files\File;
 
@@ -25,8 +24,8 @@ class FileController extends Controller
 
     public function downloadFile($id)
     {
-        $filex =$this->file->find($id);
+        $file =$this->file->find($id);
 
-        return Storage::download($filex->src, $filex->name);
+        return Storage::download($file->src, $file->name);
     }
 }

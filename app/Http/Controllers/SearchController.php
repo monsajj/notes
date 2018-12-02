@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchNote;
 use App\Services\Searcher\NoteSearcher;
-use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {

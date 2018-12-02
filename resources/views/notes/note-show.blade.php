@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">Show</div>
 
-                    <div class="card-body">
+                    <div class="card-body" style="background-color: {{ $note->colour }}">
 
                         <div class="form-group row">
                             <label for="title" class="col-md-4 col-form-label text-md-right">title</label>
@@ -31,7 +31,7 @@
                             <label for="tags" class="col-md-4 col-form-label text-md-right">tags</label>
 
                             <div class="col-md-6">
-                                <input id="tags" type="text" class="form-control" name="tags" value="{{ $note->file }}" disabled>
+                                <input id="tags" type="text" class="form-control" name="tags" value="{{ $note->tags }}" disabled>
                             </div>
                         </div>
 
@@ -44,10 +44,10 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="lifetime" class="col-md-4 col-form-label text-md-right">lifetime</label>
+                            <label for="lifetime" class="col-md-4 col-form-label text-md-right">deathdate</label>
 
                             <div class="col-md-6">
-                                <input id="lifetime" type="text" class="form-control" name="lifetime" value="to delete {{ $note->lifetime }} day(s)" disabled>
+                                <input id="lifetime" type="text" class="form-control" name="lifetime" value="{{ $note->deathdate }}" disabled>
                             </div>
                         </div>
 
@@ -64,6 +64,14 @@
                             </div>
                         @endif
 
+                        @if($note->public)
+                            <div class="form-group row mb-0">
+                                <label for="url" class="col-md-4 col-form-label text-md-right">url to public access</label>
+                                <div class="col-md-6 offset-md-4">
+                                    <input name="url" id="url" type="text" class="form-control" value=" {{ Request::url() }}" size="30">
+                                </div>
+                            </div>
+                        @endif
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <a type="" class="btn btn-primary" href="{{ route('notes.index') }}">
@@ -71,7 +79,6 @@
                                 </a>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
