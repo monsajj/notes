@@ -27,7 +27,7 @@ class StoreNote extends FormRequest
             'title' => ['required', 'min:2'],
             'text' => ['required', 'min:2'],
             'tags' => ['sometimes', 'nullable', 'min:2'],
-            'image' => ['required', 'mimes:jpeg,jpg,png,xlsx,docx,odt,pdf', 'max:2048'],
+            'image' => ['sometimes', 'mimes:jpeg,jpg,png,xlsx,docx,odt,pdf', 'max:2048'],
         ];
     }
 

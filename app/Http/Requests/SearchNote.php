@@ -33,9 +33,6 @@ class SearchNote extends FormRequest
         return [
             'param.required' => 'Text is required',
             'param.min:2' => 'Text must be at least 2 letters',
-            'text.required' => 'Text is required',
-            'text.min:2' => 'Text must be at least 2 letters',
-            'tags.min:2' => 'Tags must be at least 2 letters',
         ];
     }
 }
