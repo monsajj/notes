@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class Note extends Model
 {
@@ -25,7 +26,8 @@ class Note extends Model
         'public',
         'tags',
         'colour',
-        'lifetime'
+        'lifetime',
+        'deathdate'
     ];
 
     /**
@@ -46,9 +48,14 @@ class Note extends Model
 
     public function getNotesByUserId()
     {
-        $notes = $this->latest('updated_at')->user()->get();
+        $notes = $this->latest('updated_at')->user()->alive()->get();
 
         return $notes;
+    }
+
+    public function getDeadNotes()
+    {
+        return $this->latest('updated_at')->dead()->get();
     }
 
     /**
@@ -58,6 +65,24 @@ class Note extends Model
     public function scopeUser(Builder $builder)
     {
         $builder->where('user_id', Auth::id());
+    }
+
+    /**
+     * @param Builder $builder
+     *
+     */
+    public function scopeAlive(Builder $builder)
+    {
+        $builder->where('deathdate', '>', Carbon::now()->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * @param Builder $builder
+     *
+     */
+    public function scopeDead(Builder $builder)
+    {
+        $builder->where('deathdate', '<', Carbon::now()->format('Y-m-d H:i:s'));
     }
 
     /**

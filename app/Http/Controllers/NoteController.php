@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Site\Notes\Note;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class NoteController extends Controller
 {
@@ -74,6 +75,7 @@ class NoteController extends Controller
         }
 
         $this->note->fill($request->toArray());
+        $this->note->deathdate = Carbon::now()->addDay($this->note->lifetime)->format('Y-m-d H:i:s');
         $this->note->slug = 'name-' . $request->title;
         $this->note->save();
 
@@ -105,7 +107,7 @@ class NoteController extends Controller
      */
     public function edit($id)
     {
-        $note = $this->note->findOrFail($id);
+        $note = $this->note->alive()->findOrFail($id);
         if($note->user_id != Auth::id())
         {
             return redirect('/');
@@ -137,6 +139,10 @@ class NoteController extends Controller
             $downloadedFile = $request->file('image');
             $this->file->saveFile($downloadedFile);
             $note->file_id = $this->file->id;
+        }
+        if($request->lifetime)
+        {
+            $note->deathdate = Carbon::now()->addDay($request->lifetime)->format('Y-m-d H:i:s');
         }
         $note->save();
         if($oldFileId)

@@ -80,7 +80,7 @@
 
                                 <div class="col-md-6">
                                     <select class="form-control{{ $errors->has('lifetime') ? ' is-invalid' : '' }}" id="lifetime" name="lifetime" required autofocus>
-                                        <option selected value="{{ $note->lifetime }}">{{ $note->lifetime }} days lasts</option>
+                                        <option selected value="0">don't change</option>
                                         <option value="30">30 days</option>
                                         <option value="15">15 days</option>
                                         <option value="1">1 day</option>
