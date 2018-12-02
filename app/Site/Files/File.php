@@ -44,4 +44,11 @@ class File extends Model
     {
         return $this->find($id);
     }
+
+    public function deleteFileById($fileId)
+    {
+        $file = $this->getFileById($fileId);
+        Storage::delete($file->src);
+        $file->destroy($fileId);
+    }
 }
