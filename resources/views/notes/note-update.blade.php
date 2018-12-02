@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">Edit</div>
 
-                    <div class="card-body">
+                    <div class="card-body" style="background-color: {{ $note->colour }}">
                         <form method="POST" action="{{ route('notes.update', ['id' => $note->id]) }}" enctype="multipart/form-data" >
 
                             @csrf
@@ -112,6 +112,14 @@
                                     <button type="submit" class="btn btn-primary">
                                         Update
                                     </button>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <a type="" class="btn btn-primary" href="{{ route('notes.index') }}">
+                                        <--My Notes
+                                    </a>
                                 </div>
                             </div>
                         </form>

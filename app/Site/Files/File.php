@@ -2,7 +2,6 @@
 
 namespace App\Site\Files;
 
-
 use App\Site\Notes\Note;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -32,7 +31,6 @@ class File extends Model
         $mimeType = $file->getClientMimeType();
         $slashPosition = strpos($mimeType, '/');
         $fileType = substr($mimeType, 0, $slashPosition);
-
         $this->fill([
             'src' => $path,
             'name' => $originalName,
@@ -47,8 +45,12 @@ class File extends Model
 
     public function deleteFileById($fileId)
     {
-        $file = $this->getFileById($fileId);
-        Storage::delete($file->src);
-        $file->destroy($fileId);
+        if($fileId)
+        {
+            $file = $this->getFileById($fileId);
+            Storage::delete($file->src);
+            $file->destroy($fileId);
+        }
+
     }
 }

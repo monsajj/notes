@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreNote;
 use App\Site\Files\File;
-use Illuminate\Http\Request;
 use App\Site\Notes\Note;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 class NoteController extends Controller
@@ -32,7 +30,6 @@ class NoteController extends Controller
         $this->file = $file;
         $this->note = $note;
     }
-
 
     /**
      * Display a listing of the resource.
@@ -64,8 +61,9 @@ class NoteController extends Controller
      */
     public function store(StoreNote $request)
     {
-        if($request->user_id != Auth::id())
+        if(!$this->note->checkUser($request->user_id))
         {
+
             return redirect('/');
         }
         if($request->file('image'))
@@ -74,10 +72,8 @@ class NoteController extends Controller
             $this->file->saveFile($downloadedFile);
             $this->note->file_id = $this->file->id;
         }
-
         $this->note->fill($request->toArray());
-        $this->note->deathdate = Carbon::now()->addDay($this->note->lifetime)->format('Y-m-d H:i:s');
-        $this->note->slug = 'name-' . $request->title;
+        $this->note->setDeathdate($this->note->lifetime);
         $this->note->save();
 
         return redirect('/');
@@ -92,8 +88,9 @@ class NoteController extends Controller
     public function show($id)
     {
         $note = $this->note->with(['file'])->findOrFail($id);
-        if($note->user_id != Auth::id())
+        if(!$this->note->checkUser($note->user_id))
         {
+
             return redirect('/');
         }
 
@@ -109,8 +106,9 @@ class NoteController extends Controller
     public function edit($id)
     {
         $note = $this->note->alive()->findOrFail($id);
-        if($note->user_id != Auth::id())
+        if(!$this->note->checkUser($note->user_id))
         {
+
             return redirect('/');
         }
 
@@ -127,12 +125,11 @@ class NoteController extends Controller
     public function update(StoreNote $request, $id)
     {
         $note = $this->note->find($id)->fill($request->toArray());
-        if($note->user_id != Auth::id())
+        if(!$this->note->checkUser($note->user_id))
         {
+
             return redirect('/');
         }
-        $note->user_id = Auth::id(); //Переместить!!! это тут только временно!!!!!!!!!!!!!!!!!!!!!!!!!!
-        $note->slug = 'name-' . $request->title;
         $oldFileId = null;
         if($request->file('image'))
         {
@@ -141,15 +138,9 @@ class NoteController extends Controller
             $this->file->saveFile($downloadedFile);
             $note->file_id = $this->file->id;
         }
-        if($request->lifetime)
-        {
-            $note->deathdate = Carbon::now()->addDay($request->lifetime)->format('Y-m-d H:i:s');
-        }
+        $note->setDeathdate($request->lifetime);
         $note->save();
-        if($oldFileId)
-        {
-            $this->file->deleteFileById($oldFileId);
-        }
+        $this->file->deleteFileById($oldFileId);
 
         return redirect('/');
     }
@@ -164,15 +155,12 @@ class NoteController extends Controller
     public function delete($id)
     {
         $note = $this->note->with(['file'])->findOrFail($id);
-        if($note->user_id != Auth::id())
+        if(!$this->note->checkUser($note->user_id))
         {
+
             return redirect('/');
         }
-        $fileId = null;
-        if($note->file)
-        {
-            $fileId = $note->file->id;
-        }
+        $fileId = $this->note->getFileId($note->file);
         $this->note->destroy($id);
         if($fileId)
         {
@@ -223,6 +211,7 @@ class NoteController extends Controller
         $note = $this->note->with(['file'])->findOrFail($id);
         if(!$note->public)
         {
+
             return view('notes.permission-denied');
         }
 

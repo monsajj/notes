@@ -20,7 +20,6 @@ class Note extends Model
     protected $fillable = [
         'user_id',
         'file_id',
-        'slug',
         'title',
         'text',
         'public',
@@ -91,5 +90,33 @@ class Note extends Model
     public function setTextAttribute(string $text)
     {
         $this->attributes['text'] = trim($text);
+    }
+
+    public function checkUser($userId)
+    {
+        if($userId == Auth::id())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getFileId($file)
+    {
+        if($file)
+        {
+            return $file->id;
+        }
+
+        return null;
+    }
+
+    public function setDeathdate($lifetime)
+    {
+        if($lifetime)
+        {
+            $this->deathdate = Carbon::now()->addDay($lifetime)->format('Y-m-d H:i:s');
+        }
     }
 }

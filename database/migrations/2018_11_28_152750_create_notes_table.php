@@ -17,7 +17,6 @@ class CreateNotesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('file_id')->nullable();
-            $table->string('slug', 100);
             $table->string('title', 100);
             $table->text('text');
             $table->boolean('public')->default(false);
