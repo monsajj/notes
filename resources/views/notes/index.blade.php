@@ -59,6 +59,12 @@
                                             </div>
                                         </div>
                                     </form>
+
+                                    @if (Route::current()->getName() != "")
+                                        <a class="btn btn-info" href="{{ url('/') }}">
+                                            My Notes
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -66,7 +72,7 @@
 
                     @if($notes->count())
                         @foreach($notes as $note)
-                            <div class="card-body">
+                            <div class="card-body" style="background-color: {{ $note->colour }}">
 
                                 <div class="form-group row">
                                     <label for="title" class="col-sm-2 col-form-label text-md-right">Title</label>
