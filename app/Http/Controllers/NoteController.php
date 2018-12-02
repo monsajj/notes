@@ -62,14 +62,18 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->user_id != Auth::id())
+        {
+            return redirect('/');
+        }
         if($request->file('image'))
         {
             $downloadedFile = $request->file('image');
             $this->file->saveFile($downloadedFile);
+            $this->note->file_id = $this->file->id;
         }
 
         $this->note->fill($request->toArray());
-        $this->note->file_id = $this->file->id;
         $this->note->slug = 'name-' . $request->title;
         $this->note->save();
 
@@ -85,6 +89,10 @@ class NoteController extends Controller
     public function show($id)
     {
         $note = $this->note->with(['file'])->findOrFail($id);
+        if($note->user_id != Auth::id())
+        {
+            return redirect('/');
+        }
 
         return view('notes.note-show' , ['note' => $note]);
     }
@@ -98,6 +106,10 @@ class NoteController extends Controller
     public function edit($id)
     {
         $note = $this->note->findOrFail($id);
+        if($note->user_id != Auth::id())
+        {
+            return redirect('/');
+        }
 
         return view('notes.note-update' , ['note' => $note]);
     }
@@ -111,17 +123,26 @@ class NoteController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $note = $this->note->find($id)->fill($request->toArray());
+        if($note->user_id != Auth::id())
+        {
+            return redirect('/');
+        }
+        $note->user_id = Auth::id(); //Переместить!!! это тут только временно!!!!!!!!!!!!!!!!!!!!!!!!!!
+        $note->slug = 'name-' . $request->title;
+        $oldFileId = null;
         if($request->file('image'))
         {
+            $oldFileId = $note->file_id;
             $downloadedFile = $request->file('image');
             $this->file->saveFile($downloadedFile);
+            $note->file_id = $this->file->id;
         }
-
-        $this->note = $this->note->find($id)->fill($request->toArray());
-        $this->note->user_id = Auth::id(); //Переместить!!! это тут только временно!!!!!!!!!!!!!!!!!!!!!!!!!!
-        $this->note->file_id = $this->file->id;
-        $this->note->slug = 'name-' . $request->title;
-        $this->note->save();
+        $note->save();
+        if($oldFileId)
+        {
+            $this->file->deleteFileById($oldFileId);
+        }
 
         return redirect('/');
     }
@@ -135,8 +156,69 @@ class NoteController extends Controller
      */
     public function delete($id)
     {
+        $note = $this->note->with(['file'])->findOrFail($id);
+        if($note->user_id != Auth::id())
+        {
+            return redirect('/');
+        }
+        $fileId = null;
+        if($note->file)
+        {
+            $fileId = $note->file->id;
+        }
         $this->note->destroy($id);
+        if($fileId)
+        {
+            $this->file->deleteFileById($fileId);
+        }
 
         return redirect('/');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function makePublic($id)
+    {
+        $this->note = $this->note->find($id);
+        $this->note->public = 1;
+        $this->note->save();
+
+        return redirect('/');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function makePrivate($id)
+    {
+        $this->note = $this->note->find($id);
+        $this->note->public = 0;
+        $this->note->save();
+
+        return redirect('/');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showPublic($id)
+    {
+        $note = $this->note->with(['file'])->findOrFail($id);
+        if(!$note->public)
+        {
+            return view('notes.permission-denied');
+        }
+
+        return view('notes.note-show' , ['note' => $note]);
     }
 }

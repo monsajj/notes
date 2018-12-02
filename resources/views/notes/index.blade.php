@@ -12,6 +12,55 @@
                                     Create
                                 </a>
                             </div>
+                            <div class="col-md-6 offset-md-3">
+                                <div class="card-body">
+                                    <form method="POST" action="{{ route('search') }}">
+                                        @csrf
+
+                                        <input id="user_id" type="hidden" name="user_id" value="{{Auth::id()}}"/>
+
+                                        <div class="form-group row">
+                                            <label for="param" class="col-md-4 col-form-label text-md-right">Search text</label>
+
+                                            <div class="col-md-6">
+                                                <input id="param" type="text" class="form-control{{ $errors->has('param') ? ' is-invalid' : '' }}" name="param" value="{{ old('param') }}" required autofocus>
+
+                                                @if ($errors->has('param'))
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $errors->first('param') }}</strong>
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="searchField" class="col-md-4 col-form-label text-md-right">Search field</label>
+
+                                            <div class="col-md-6">
+                                                <select class="form-control{{ $errors->has('searchField') ? ' is-invalid' : '' }}" id="searchField" name="searchField" required autofocus>
+                                                    <option value="title">title</option>
+                                                    <option value="text">text</option>
+                                                </select>
+
+                                                @if ($errors->has('searchField'))
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $errors->first('searchField') }}</strong>
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group row mb-0">
+                                            <div class="col-md-6 offset-md-4">
+                                                <button type="submit" class="btn btn-primary">
+                                                    Search
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -50,6 +99,20 @@
                                         <a class="btn btn-danger" href="{{ route('notes.delete', ['id' => $note->id]) }}">
                                             Destroy
                                         </a>
+                                        @if($note->public)
+                                            <a class="btn btn-info" href="{{ route('make.private', ['id' => $note->id]) }}">
+                                                Make Private
+                                            </a>
+                                            <a class="btn btn-warning" href="{{ route('show.public', ['id' => $note->id]) }}">
+                                                Link to public show
+                                            </a>
+                                        @else
+                                            <a class="btn btn-info" href="{{ route('make.public', ['id' => $note->id]) }}">
+                                                Make Public
+                                            </a>
+                                        @endif
+
+
                                     </div>
                                 </div>
 
