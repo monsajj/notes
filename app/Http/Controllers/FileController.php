@@ -24,8 +24,10 @@ class FileController extends Controller
 
     public function downloadFile($id)
     {
+        //Нахожу файл по id для ссылки на его скачивание
         $file =$this->file->find($id);
 
+        //Возвращаю ссылку на скачивание файла из сайта
         return Storage::download($file->src, $file->name);
     }
 }

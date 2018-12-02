@@ -54,11 +54,16 @@ class Notekiller extends Command
      */
     public function handle():void
     {
+        //Получаю список всех заметок у которых "срок жизни" уже закончился
         $notes = $this->note->getDeadNotes();
+        //Делаю проход по каждой такой заметке
         foreach ($notes as $note)
         {
+            //Если у заметки есть файл то запоминаю его id для последующего удаления
             $fileId = $note->file_id;
+            //Удаляю заметку
             $this->note->destroy($note->id);
+            //При наличии файла к заметке - удаляю файл
             if($fileId)
             {
                 $this->file->deleteFileById($fileId);

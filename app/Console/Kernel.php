@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        //Шедулер который ежедневно удаляет заметки срок жизни которых уже истек
         $schedule->command('notekill:dead')->daily();
     }
 
