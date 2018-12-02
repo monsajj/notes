@@ -25,17 +25,20 @@ class File extends Model
 
     public function saveFile($file)
     {
-        $path = $file->store('public');
-        $nameExplode = explode(".", $file->getClientOriginalName());
-        $originalName = ucfirst(str_slug($nameExplode[0]) . '.' . $nameExplode[1]);
-        $mimeType = $file->getClientMimeType();
-        $slashPosition = strpos($mimeType, '/');
-        $fileType = substr($mimeType, 0, $slashPosition);
-        $this->fill([
-            'src' => $path,
-            'name' => $originalName,
-            'type' => $fileType,
-        ])->save();
+        if($file)
+        {
+            $path = $file->store('public');
+            $nameExplode = explode(".", $file->getClientOriginalName());
+            $originalName = ucfirst(str_slug($nameExplode[0]) . '.' . $nameExplode[1]);
+            $mimeType = $file->getClientMimeType();
+            $slashPosition = strpos($mimeType, '/');
+            $fileType = substr($mimeType, 0, $slashPosition);
+            $this->fill([
+                'src' => $path,
+                'name' => $originalName,
+                'type' => $fileType,
+            ])->save();
+        }
     }
 
     public function getFileById($id)

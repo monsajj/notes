@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreNote;
 use App\Site\Files\File;
 use App\Site\Notes\Note;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 class NoteController extends Controller
 {
@@ -66,12 +64,7 @@ class NoteController extends Controller
 
             return redirect('/');
         }
-        if($request->file('image'))
-        {
-            $downloadedFile = $request->file('image');
-            $this->file->saveFile($downloadedFile);
-            $this->note->file_id = $this->file->id;
-        }
+        $this->file->saveFile($request->file('image'));
         $this->note->fill($request->toArray());
         $this->note->setDeathdate($this->note->lifetime);
         $this->note->save();
@@ -162,10 +155,7 @@ class NoteController extends Controller
         }
         $fileId = $this->note->getFileId($note->file);
         $this->note->destroy($id);
-        if($fileId)
-        {
-            $this->file->deleteFileById($fileId);
-        }
+        $this->file->deleteFileById($fileId);
 
         return redirect('/');
     }

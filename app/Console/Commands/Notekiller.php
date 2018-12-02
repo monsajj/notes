@@ -59,10 +59,7 @@ class Notekiller extends Command
         {
             $fileId = $note->file_id;
             $this->note->destroy($note->id);
-            if($fileId)
-            {
-                $this->file->deleteFileById($fileId);
-            }
+            $this->file->deleteFileById($fileId);
         }
     }
 }
