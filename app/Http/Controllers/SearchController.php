@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchNote;
 use App\Services\Searcher\NoteSearcher;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,7 @@ class SearchController extends Controller
         $this->noteSearcher = $noteSearcher;
     }
 
-    public function search(Request $request)
+    public function search(SearchNote $request)
     {
         $foundNotes = $this->noteSearcher->search($request->searchField, $request->param);
 
