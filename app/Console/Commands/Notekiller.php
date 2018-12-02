@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Site\Notes\Note;
 use App\Site\Files\File;
-use App\Http\Controllers\NoteController;
 
 class Notekiller extends Command
 {
@@ -34,24 +33,17 @@ class Notekiller extends Command
     private $file;
 
     /**
-     * @var NoteController
-     */
-    private $noteController;
-
-    /**
      * Create a new command instance.
      *
      * @param File $file
      * @param Note $note
-     * @param NoteController $noteController
      * @return void
      */
-    public function __construct(Note $note, NoteController $noteController, File $file)
+    public function __construct(Note $note, File $file)
     {
         parent::__construct();
         $this->file = $file;
         $this->note = $note;
-        $this->noteController = $noteController;
     }
 
     /**
