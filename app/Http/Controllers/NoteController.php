@@ -66,6 +66,7 @@ class NoteController extends Controller
         }
         $this->file->saveFile($request->file('image'));
         $this->note->fill($request->toArray());
+        $this->note->file_id = $this->file->id;
         $this->note->setDeathdate($this->note->lifetime);
         $this->note->save();
 

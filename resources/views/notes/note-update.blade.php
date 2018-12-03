@@ -95,7 +95,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="image" class="col-md-4 col-form-label text-md-right">new image</label>
+                                <label for="image" class="col-md-4 col-form-label text-md-right">new file</label>
                                 <div class="col-md-6">
                                     <input name="image" id="image" type="file" class="form-control{{ $errors->has('image') ? ' is-invalid' : '' }}"  value="{{ old('image') }}" autofocus>
 
